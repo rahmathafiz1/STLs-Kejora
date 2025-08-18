@@ -1,1 +1,1 @@
-STLs Kejora.html# generator-struk-bri-final
+# generator-struk-bri-final
