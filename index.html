@@ -6,7 +6,6 @@
     <title>Generator Struk Transfer BRI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Pustaka untuk membuat gambar dari HTML -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         body {
@@ -15,6 +14,7 @@
         .receipt {
             box-shadow: 0 0 15px rgba(0,0,0,0.1);
             text-transform: uppercase;
+            color: #1a202c;
         }
         .editable {
             outline: none;
@@ -24,8 +24,23 @@
             display: inline-block;
         }
         .editable:hover, .editable:focus {
-            border: 1px dashed #3b82f6; /* blue-500 */
-            background-color: #eff6ff; /* blue-50 */
+            border: 1px dashed #3b82f6;
+            background-color: #eff6ff;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details-table td {
+            padding-top: 0.05rem;
+            padding-bottom: 0.05rem;
+            vertical-align: top;
+        }
+        .details-table .label-col {
+            width: 80px;
+        }
+        .details-table .colon-col {
+            width: 15px;
         }
         .logo-container {
             position: relative;
@@ -49,24 +64,6 @@
         .logo-container:hover .upload-overlay {
             opacity: 1;
         }
-        
-        /* Menggunakan Tabel untuk Tata Letak yang Stabil */
-        .details-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .details-table td {
-            padding-top: 0.1rem;
-            padding-bottom: 0.1rem;
-            vertical-align: top;
-        }
-        .details-table .label-col {
-            width: 80px; /* Lebar tetap untuk kolom label */
-        }
-        .details-table .colon-col {
-            width: 15px; /* Lebar tetap untuk kolom titik dua */
-        }
-        
         @media print {
             .no-print {
                 display: none !important;
@@ -76,18 +73,26 @@
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
 
-    <div class="w-full max-w-md mx-auto">
+    <div class="w-full max-w-sm mx-auto">
         
-        <!-- Container Struk -->
-        <div id="receipt-container" class="bg-white p-6 rounded-lg receipt text-black text-sm">
+        <div id="receipt-container" class="bg-white p-6 rounded-lg receipt text-sm">
             
+            <!-- Header dengan Logo Gambar dan Alamat yang Benar -->
             <div class="text-center mb-3">
                 <div class="logo-container inline-block">
                     <img id="logo-img" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/BRI_2020.svg/2560px-BRI_2020.svg.png" alt="Logo BANK BRI" class="w-48 mx-auto" onerror="this.onerror=null;this.src='https://placehold.co/200x60/003399/FFFFFF?text=Logo+BRI';">
-                    <label for="logo-upload" class="upload-overlay no-print"><span>Ganti Logo</span></label>
+                    <label for="logo-upload" class="upload-overlay no-print">
+                        <span>Ganti Logo</span>
+                    </label>
                     <input type="file" id="logo-upload" class="hidden" accept="image/*">
                 </div>
-                <div class="text-xs font-bold mt-2" contenteditable="true">Jl.Jend.Sudirman No.44-46,Jakarta 1<br>DKI Jakarta Telp : 1500017</div>
+                <!-- PERBAIKAN: Alamat disesuaikan dengan format enter yang diminta -->
+                <div class="text-xs font-bold mt-4 leading-tight" contenteditable="true">
+                    KANTOR PUSAT<br>
+                    PT. BANK RAKYAT INDONESIA (PERSERO)<br>
+                    TBK GEDUNG BRI JL. JENDERAL SUDIRMAN KAV.44-<br>
+                    46 JAKARTA 10210 INDONESIA
+                </div>
             </div>
 
             <table class="details-table mb-3">
@@ -105,7 +110,7 @@
                 </tbody>
             </table>
             
-            <hr class="border-dashed my-2">
+            <hr class="border-dashed my-2 border-gray-400">
 
             <div class="mb-3">
                 <p class="font-bold mb-1">REKENING ASAL</p>
@@ -130,7 +135,7 @@
                 </table>
             </div>
 
-            <hr class="border-dashed my-2">
+            <hr class="border-dashed my-2 border-gray-400">
 
             <div class="mb-3">
                 <p class="font-bold mb-1">REKENING TUJUAN</p>
@@ -155,7 +160,7 @@
                 </table>
             </div>
             
-            <hr class="border-dashed my-2">
+            <hr class="border-dashed my-2 border-gray-400">
 
             <table class="details-table font-bold mb-3">
                 <tbody>
@@ -169,8 +174,7 @@
 
             <div class="text-center font-bold my-3 p-2 border border-dashed border-gray-400">
                 <div class="editable text-red-600" contenteditable="true">TRANSAKSI PENDING</div>
-                <!-- PERBAIKAN TEKS -->
-                <div class="text-xs font-medium editable mt-1" contenteditable="true">Silahkan LUNASI SYARAT PROSEDUR UNTUK pengaktifan kode VALIDASI HADIAH RP.350.000,00 UNTUK PENCAIRAN DANA (1X24JAM)</div>
+                <div class="text-xs font-medium editable mt-1" contenteditable="true">SILAHKAN LUNASI SYARAT PROSEDUR UNTUK PENGAKTIFAN KODE VALIDASI HADIAH RP.350.000,00 UNTUK PENCAIRAN DANA (1X24JAM)</div>
             </div>
             
             <div class="text-center text-xs leading-tight">
@@ -207,12 +211,12 @@
             receiptElement.style.boxShadow = 'none';
 
             html2canvas(receiptElement, {
-                scale: 2,
+                scale: 3,
                 useCORS: true,
                 backgroundColor: '#ffffff'
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'BRITransferReceipt.png';
+                link.download = 'BRITransferReceipt_New.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 receiptElement.style.boxShadow = originalStyle;
@@ -222,6 +226,7 @@
             });
         });
 
+        // Fungsionalitas Ganti Logo
         const logoUpload = document.getElementById('logo-upload');
         const logoImg = document.getElementById('logo-img');
 
@@ -232,6 +237,12 @@
                     logoImg.src = e.target.result;
                 }
                 reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+    </script>
+
+</body>
+</html>        reader.readAsDataURL(event.target.files[0]);
             }
         });
     </script>
